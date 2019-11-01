@@ -8,8 +8,8 @@ integer,parameter		:: m_max = 10
 
 real(4),parameter		:: x_min = 0.0
 real(4),parameter		:: x_max = 1.0
-real(8),parameter 		:: dx   = (x_max -x_min)/dble(m_max)	!! 空間刻み幅
-real(8),parameter 		:: dt   = 1.0/dble(n_max)						!! 時間刻み幅
+real(8),parameter 		:: dx   = 0.1	!! 空間刻み幅
+real(8),parameter 		:: dt   = 0.0001						!! 時間刻み幅
 
 real(4),parameter		:: kappa = 0.5	!! 拡散係数
 
@@ -45,20 +45,18 @@ real lambda
 lambda = kappa * (dt/(dx**2))	!! 刻み幅定数
  
 u(0) = 0.0
-u(m_max) = 0.0
+u(1) = 0.0
 
 do i = 0, m_max
  x(i) = dx * i
 end do
-
-if (lambda <= 0.5) then
 
 	call get_ICs(u)
 
 	do j = 1, n_max
 		t = dt * j
 		call calculation_unew(u)
-		if (mod(j,10)==0) then
+		if (mod(j,100)==0) then
 			write(tmp,'(i4)') j 
 			filename='diffusion_'//trim(adjustl(tmp))//'.dat'
 			open(10, file = filename, status="replace")
@@ -72,10 +70,6 @@ if (lambda <= 0.5) then
 		end if
 	end do
 
-else
-	write(*,*) "この拡散数は Von Neumann の安定条件を満たしていない."
-
-end if
 
 stop
 end program main
