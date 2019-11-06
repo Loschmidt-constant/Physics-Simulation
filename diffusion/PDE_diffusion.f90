@@ -9,7 +9,7 @@ integer,parameter		:: m_max = 10
 real(4),parameter		:: x_min = 0.0
 real(4),parameter		:: x_max = 1.0
 real(8),parameter 		:: dx   = 0.1	!! 空間刻み幅
-real(8),parameter 		:: dt   = 0.0001						!! 時間刻み幅
+real(8),parameter 		:: dt   = 0.00001						!! 時間刻み幅
 
 real(4),parameter		:: kappa = 0.5	!! 拡散係数
 
