@@ -3,13 +3,13 @@ module constant_values
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 implicit none
 
-integer,parameter		:: n_max = 1000
-integer,parameter		:: m_max = 10
+integer,parameter		:: n_max = 10000
+integer,parameter		:: m_max = 50
 
 real(4),parameter		:: x_min = 0.0
 real(4),parameter		:: x_max = 1.0
 real(8),parameter 		:: dx   = 0.02	!! 空間刻み幅
-real(8),parameter 		:: dt   = 1.0/1000.0						!! 時間刻み幅
+real(8),parameter 		:: dt   = 1.0/100000.0				!! 時間刻み幅
 
 real(4),parameter		:: kappa = 0.5	!! 拡散係数
 
@@ -53,10 +53,10 @@ end do
 
 	call get_ICs(u)
 
-	do j = 1, n_max
+	do j = 0, n_max
 		t = dt * j
 		call calculation_unew(u)
-		if (mod(j,100)==0) then
+		if (mod(j,100)==10) then
 			write(tmp,'(i4)') j 
 			filename='diffusion_'//trim(adjustl(tmp))//'.dat'
 			open(10, file = filename, status="replace")
@@ -82,7 +82,7 @@ use constant_values
 use set_functions
 
 implicit none
-integer									:: i
+integer								:: i
 real										:: x
 real,dimension(0:m_max)	:: u
 
@@ -109,7 +109,7 @@ use constant_values
 use set_functions
 
 implicit none
-integer			  						:: i
+integer			  					:: i
 real,dimension(0:m_max)	:: u
 real,dimension(0:m_max)	:: u_old
 real lambda
