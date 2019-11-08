@@ -3,7 +3,7 @@ module constant_values
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 implicit none
 
-integer,parameter		:: n_max = 1000
+integer,parameter		:: n_max = 5000
 integer,parameter		:: m_max = 10
 
 real(4),parameter		:: x_min = 0.0
@@ -11,7 +11,7 @@ real(4),parameter		:: x_max = 1.0
 real(8),parameter 		:: dx   = (x_max -x_min)/dble(m_max)	!! 空間刻み幅
 real(8),parameter 		:: dt   = 1.0/dble(n_max)						!! 時間刻み幅
 
-real(4),parameter		:: kappa = 0.1	!! 拡散係数
+real(4),parameter		:: kappa = 10	!! 拡散係数
 
 end module constant_values
 
@@ -51,6 +51,8 @@ do i = 0, m_max
  x(i) = dx * i
 end do
 
+if (lambda <= 0.5) then
+
 	call get_ICs(u)
 
 	do j = 1, n_max
@@ -69,6 +71,11 @@ end do
 		
 		end if
 	end do
+
+else
+	write(*,*) "この拡散数は Von Neumann の安定条件を満たしていない."
+
+end if
 
 stop
 end program main
