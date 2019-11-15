@@ -52,10 +52,19 @@ do i = 0, m_max
 end do
 
 if (lambda <= 0.5) then
-
+	
+	filename='diffusion_0.dat'
+	open(9, file = filename, status="replace")
+	
 	call get_ICs(u)
+	
+	do i = 0, m_max
+		write(9,*) x(i), u(i)
+	end do
 
-	do j = 1, n_max
+	close(9)
+	
+	do j = 1, n_max+1
 		t = dt * j
 		call calculation_unew(u)
 		if (mod(j,10)==0) then
