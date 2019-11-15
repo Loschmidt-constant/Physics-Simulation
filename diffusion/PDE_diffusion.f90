@@ -12,6 +12,7 @@ real(8),parameter 		:: dx   = (x_max -x_min)/dble(m_max)	!! 空間刻み幅
 real(8),parameter 		:: dt   = 1.0/dble(n_max)						!! 時間刻み幅
 
 real(4),parameter		:: kappa = 0.5	!! 拡散係数
+real(8),parameter 		:: pi = 4d0 * atan(1d0)
 
 end module constant_values
 
@@ -53,12 +54,21 @@ end do
 
 if (lambda <= 0.5) then
 
+	filename='diffusion_0.dat'
+	open(9, file = filename, status="replace")
+	
 	call get_ICs(u)
+	
+	do i = 0, m_max
+		write(9,*) x(i), u(i)
+	end do
 
-	do j = 1, n_max
+	close(9)
+
+	do j = 1, n_max+1
 		t = dt * j
 		call calculation_unew(u)
-		if (mod(j,10)==0) then
+		if (mod(j,100)==0) then
 			write(tmp,'(i4)') j 
 			filename='diffusion_'//trim(adjustl(tmp))//'.dat'
 			open(10, file = filename, status="replace")
@@ -95,13 +105,7 @@ real,dimension(0:m_max)	:: u
 
 do i = 1, m_max-1
 	x = dx * i
-	
-	if (x >= 0.25 .and. x < 0.75) then
-		u(i) = 1.0
-	else 
-		u(i) = 0.0
-	end if
-
+	u(i) = sin(2*pi*x)+sin(10*pi*x)
 end do
 
 
