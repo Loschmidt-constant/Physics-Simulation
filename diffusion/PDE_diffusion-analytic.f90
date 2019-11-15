@@ -50,9 +50,18 @@ end do
 u(0) = 0.0
 u(m_max) = 10.0
 
+filename='diffusion-ana_0.dat'
+open(9, file = filename, status="replace")
+		
 call get_ICs(u)
+do i = 0, m_max
+	write(9,*) x(i), u(i)
+end do
+		
+close(9)
 
-do j = 0, n_max
+
+do j = 1, n_max
 	t = dt * j
 	call calculation_unew(u,x,t)	
 	if (mod(j,100)==0) then
@@ -118,12 +127,11 @@ do i = 0, m_max
 	u_old(i) = u(i)
 end do
 
-do i = 1, m_max
-			c(i) = -(20/(pi*i))*(cos(pi*i*x(i))-cos(0.5*pi*i*x(i)))
+do i = 1, m_max-1
+			c(i) = (sin(pi*i)/((pi*i)**2))-(cos(pi*i)/(pi*i))-((cos(pi*i)-cos(0.5*pi*i))/(pi*i))
+			!c(i) = -(20/(pi*i))*(cos(pi*i)-cos(0.5*pi*i))
 			u(i) = u_old(i-1) + c(i)*exp(-0.5*t*(pi*i)**2)*sin(pi*i*x(i))
 end do
-
-!write(*,*) u(1)
 
 end subroutine calculation_unew
 
