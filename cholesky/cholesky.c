@@ -1,23 +1,23 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 
-#define N 10   /* Nｼ｡ﾀｵﾊｹﾔﾎ・*/
+#define N 10   /* N次正方行列 */
 
-/* ｹﾔﾎﾎﾆﾎﾏ */
+/* 行列の入力 */
 void input_matrix( double **a, char c, FILE *fin, FILE *fout);
-/* ･ﾙ･ｯ･ﾈ･・ﾎﾆﾎﾏ */
+/* ･ベクトルの入力 */
 void input_vector( double *b, char c, FILE *fin, FILE *fout);
-/* ｹﾔﾎﾎﾎﾎｰ雉ﾎﾊﾝ */
+/* 行列のスペース確保 */
 double **dmatrix(int nr1, int nr2, int nl1, int nl2);
-/* ｹﾔﾎﾎﾎﾎｰ雋・*/
+/* 行列のスペース開放 */
 void free_dmatrix(double **a, int nr1, int nr2, int nl1, int nl2);
-/* ･ﾙ･ｯ･ﾈ･・ﾎｰ隍ﾎｳﾎﾊﾝ */
+/* ベクトルのスペース確保 */
 double *dvector(int i, int j);  
-/* ﾎﾎｰ隍ﾎｲ・*/
+/* ベクトルのスペース開放 */
 void free_dvector(double *a, int i); 
-/* ｽ､ﾀｵ･ｳ･・ｹ･ｭ｡ｼﾊｬｲ・*/
+/* 修正Cholesky分解法 */
 double **cholesky_decomp( double **a );
-/* ｽ､ﾀｵ･ｳ･・ｹ･ｭ｡ｼﾊｬｲﾑ､ｷ､ﾆﾏ｢ﾎｩ1ｼ｡ﾊﾄｰ､ｯ */
+/* 修正Cholesky分解法による連立方程式の解 */
 double *cholesky_solve( double **a, double *b );
 
 int main(void)
@@ -26,11 +26,10 @@ int main(void)
   double **a, *b; 
   int i; 
 
-  /* ｹﾔﾎｪ､隍ﾓ･ﾙ･ｯ･ﾈ･・ﾎﾎﾎｰ雉ﾎﾊﾝ */
-  a = dmatrix(1, N, 1, N); /* ｹﾔﾎ・a[1...N][1...N] */
-  b = dvector(1,N); /* b[1...N] */
+  a = dmatrix(1, N, 1, N); /* 行列 a[1...N][1...N] */
+  b = dvector(1,N); /* ベクトル b[1...N] */
 
-  /* ･ﾕ･｡･､･・ﾎ･ｪ｡ｼ･ﾗ･・*/
+  /* ファイル出力 */
   if ( (fin = fopen( "input_matrix.dat", "r")) == NULL )
   {
       printf("File not found : input_matrix.dat \n");
@@ -47,7 +46,7 @@ int main(void)
   a = cholesky_decomp( a );           /* ｽ､ﾀｵ･ｳ･・ｹ･ｭ｡ｼﾊｬｲ・*/
   b = cholesky_solve( a, b );         /* ﾁｰｿﾊﾂ衄｡ｦｸ蠶狡衄 */
 
-  /* ｷ・ﾌ､ﾎｽﾐﾎﾏ */
+  /* 結果出力 */
   fprintf( fout, "\nThe solution for Ax = b is ;\n");
   for( i = 1 ; i <= N ; i++)
   {
@@ -57,12 +56,14 @@ int main(void)
 
   fclose(fin); fclose(fout);  /* ･ﾕ･｡･､･・ﾎ･ｯ･悅ｼ･ｺ */
 
-  /* ﾎﾎｰ隍ﾎｲ・*/
+  /* スペース開放 */
   free_dmatrix( a, 1, N, 1, N );  free_dvector( b, 1 );
 
   return 0;
 }
 
+
+/* 修正Cholesky分解法 */
 double **cholesky_decomp( double **a )
 {
   int i, j, k;
@@ -89,6 +90,8 @@ double **cholesky_decomp( double **a )
   return a; 
 }
 
+
+/* 修正Cholesky分解法による連立方程式の解 */
 double *cholesky_solve( double **a, double *b )
 {
   int i, j;
@@ -120,7 +123,8 @@ double *cholesky_solve( double **a, double *b )
   return b;
 }
 
-/* a[1...N][1...N]､ﾎﾆﾎﾏ */
+
+/* a[1...N][1...N]の入力 */
 void input_matrix( double **a, char c, FILE *fin, FILE *fout)
 {
   int i,j;
@@ -137,7 +141,8 @@ void input_matrix( double **a, char c, FILE *fin, FILE *fout)
   }
 }
 
-/* b[1...N]､ﾎﾆﾎﾏ */
+
+/* b[1...N]の入力 */
 void input_vector( double *b, char c, FILE *fin, FILE *fout)
 {
   int i;
@@ -151,38 +156,42 @@ void input_vector( double *b, char c, FILE *fin, FILE *fout)
   }
 }
 
+
+/* 行列のスペース確保 */
 double **dmatrix(int nr1, int nr2, int nl1, int nl2)
 {
   int i, nrow, ncol; 
   double **a; 
 
-  nrow = nr2 - nr1 + 1 ; /* ｹﾔ､ﾎｿ・*/
-  ncol = nl2 - nl1 + 1 ; /* ﾎﾎｿ・*/
+  nrow = nr2 - nr1 + 1 ; /* 行数 */
+  ncol = nl2 - nl1 + 1 ; /* 列数 */
 
-  /* ｹﾔ､ﾎｳﾎﾊﾝ */
+  /* 行確保 */
   if ( ( a=(double **)malloc( nrow*sizeof(double *) ) ) == NULL ) 
   {
     printf("Memory cannot be secured.(from the matrix A)\n");
     exit(1);
   }
-  a = a - nr1; /* ｹﾔ､ｺ､鬢ｹ */
-  /* ﾎﾎｳﾎﾊﾝ */
+  a = a - nr1; /* 行をずらす */
+  /* 列確保 */
   for( i=nr1; i<=nr2; i++) a[i] = (double *)malloc(ncol*sizeof(double)); 
   for( i=nr1; i<=nr2; i++) a[i] = a[i]-nl1;             /* ﾎｺ､鬢ｹ */
   
   return(a);
 }
 
+
+/* 行列のスペース開放 */
 void free_dmatrix(double **a, int nr1, int nr2, int nl1, int nl2)
 {
   int i;
 
-  /* ･皈筵熙ﾎｲ・ */
+  /* メモリ開放 */
   for ( i = nr1 ; i <= nr2 ; i++) free((void *)(a[i]+nl1));
   free((void *)(a+nr1));
 }
 
-double *dvector(int i, int j) /* a[i]｡ﾁa[i+j]､ﾎﾎﾎｰ隍ﾎﾊﾝ */
+double *dvector(int i, int j) /* a[i] ～ a[i+j]のスペース確保 */
 {
   double *a;
 
@@ -197,5 +206,5 @@ double *dvector(int i, int j) /* a[i]｡ﾁa[i+j]､ﾎﾎﾎｰ隍ﾎﾊﾝ 
 
 void free_dvector(double *a, int i)
 {
-  free( (void *)(a + i) );  /* (void *)ｷｿ､ﾘ､ﾎ･ｭ･罕ｹ･ﾈ､ｬﾉｬﾍﾗ */
+  free( (void *)(a + i) ); 
 }
