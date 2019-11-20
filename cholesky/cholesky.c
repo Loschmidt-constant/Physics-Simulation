@@ -5,7 +5,7 @@
 
 /* 行列の入力 */
 void input_matrix( double **a, char c, FILE *fin, FILE *fout);
-/* ･ベクトルの入力 */
+/* ベクトルの入力 */
 void input_vector( double *b, char c, FILE *fin, FILE *fout);
 /* 行列のスペース確保 */
 double **dmatrix(int nr1, int nr2, int nl1, int nl2);
@@ -41,10 +41,10 @@ int main(void)
     exit(1);
    }
 
-  input_matrix( a, 'A', fin, fout );  /* ｹﾔﾎ､ﾎﾆｽﾐﾎﾏ */  
-  input_vector( b, 'b', fin, fout );  /* ･ﾙ･ｯ･ﾈ･・､ﾎﾆｽﾐﾎﾏ */
-  a = cholesky_decomp( a );           /* ｽ､ﾀｵ･ｳ･・ｹ･ｭ｡ｼﾊｬｲ・*/
-  b = cholesky_solve( a, b );         /* ﾁｰｿﾊﾂ衄｡ｦｸ蠶狡衄 */
+  input_matrix( a, 'A', fin, fout );  /* 行列Aの入出力 */  
+  input_vector( b, 'b', fin, fout );  /* ベクトルbの入出力 */
+  a = cholesky_decomp( a );           /* 修正コレスキー分解 */
+  b = cholesky_solve( a, b );         /* 前進代入・後退代入 */
 
   /* 結果出力 */
   fprintf( fout, "\nThe solution for Ax = b is ;\n");
@@ -54,7 +54,7 @@ int main(void)
     fprintf( fout, "\n");
   }
 
-  fclose(fin); fclose(fout);  /* ･ﾕ･｡･､･・ﾎ･ｯ･悅ｼ･ｺ */
+  fclose(fin); fclose(fout); 
 
   /* スペース開放 */
   free_dmatrix( a, 1, N, 1, N );  free_dvector( b, 1 );
@@ -173,9 +173,10 @@ double **dmatrix(int nr1, int nr2, int nl1, int nl2)
     exit(1);
   }
   a = a - nr1; /* 行をずらす */
+  
   /* 列確保 */
   for( i=nr1; i<=nr2; i++) a[i] = (double *)malloc(ncol*sizeof(double)); 
-  for( i=nr1; i<=nr2; i++) a[i] = a[i]-nl1;             /* ﾎｺ､鬢ｹ */
+  for( i=nr1; i<=nr2; i++) a[i] = a[i]-nl1;             /* 列をずらす */
   
   return(a);
 }
