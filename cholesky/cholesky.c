@@ -1,23 +1,23 @@
-#include <stdio.h>
+ï»¿#include <stdio.h>
 #include <stdlib.h>
 
-#define N 3   /* N¼¡ÀµÊı¹ÔÎó */
+#define N 10   /* Nï½¼ï½¡ï¾€ï½µï¾Šï£±ï½¹ï¾”ï¾ãƒ»*/
 
-/* ¹ÔÎó¤ÎÆşÎÏ */
+/* ï½¹ï¾”ï¾îŠ—ï¾ï¾†ï£²ï¾ï¾ */
 void input_matrix( double **a, char c, FILE *fin, FILE *fout);
-/* ¥Ù¥¯¥È¥ë¤ÎÆşÎÏ */
+/* ï½¥ï¾™ï½¥ï½¯ï½¥ï¾ˆï½¥ãƒ»ï¾ï¾†ï£²ï¾ï¾ */
 void input_vector( double *b, char c, FILE *fin, FILE *fout);
-/* ¹ÔÎó¤ÎÎÎ°è³ÎÊİ */
+/* ï½¹ï¾”ï¾îŠ—ï¾ï¾ï¾ï½°é›‰ï¾ï¾Šï¾ */
 double **dmatrix(int nr1, int nr2, int nl1, int nl2);
-/* ¹ÔÎó¤ÎÎÎ°è²òÊü */
+/* ï½¹ï¾”ï¾îŠ—ï¾ï¾ï¾ï½°é›‹îˆãƒ»*/
 void free_dmatrix(double **a, int nr1, int nr2, int nl1, int nl2);
-/* ¥Ù¥¯¥È¥ëÎÎ°è¤Î³ÎÊİ */
+/* ï½¥ï¾™ï½¥ï½¯ï½¥ï¾ˆï½¥ãƒ»ï¾ï½°éšï¾ï½³ï¾ï¾Šï¾ */
 double *dvector(int i, int j);  
-/* ÎÎ°è¤Î²òÊü */
+/* ï¾ï¾ï½°éšï¾ï½²îˆãƒ»*/
 void free_dvector(double *a, int i); 
-/* ½¤Àµ¥³¥ì¥¹¥­¡¼Ê¬²ò */
+/* ï½½ï½¤ï¾€ï½µï½¥ï½³ï½¥ãƒ»ï½¹ï½¥ï½­ï½¡ï½¼ï¾Šï½¬ï½²ãƒ»*/
 double **cholesky_decomp( double **a );
-/* ½¤Àµ¥³¥ì¥¹¥­¡¼Ê¬²ò¤òÍøÍÑ¤·¤ÆÏ¢Î©1¼¡ÊıÄø¼°¤ò²ò¤¯ */
+/* ï½½ï½¤ï¾€ï½µï½¥ï½³ï½¥ãƒ»ï½¹ï½¥ï½­ï½¡ï½¼ï¾Šï½¬ï½²î‡›îˆ„î™¬ï¾‘ï½¤ï½·ï½¤ï¾†ï¾ï½¢ï¾ï½©1ï½¼ï½¡ï¾Šï£±ï¾„î™›ï½°ï½¤î‡©î‡›ï½¯ */
 double *cholesky_solve( double **a, double *b );
 
 int main(void)
@@ -26,28 +26,28 @@ int main(void)
   double **a, *b; 
   int i; 
 
-  /* ¹ÔÎó¤ª¤è¤Ó¥Ù¥¯¥È¥ë¤ÎÎÎ°è³ÎÊİ */
-  a = dmatrix(1, N, 1, N); /* ¹ÔÎó a[1...N][1...N] */
+  /* ï½¹ï¾”ï¾îŠ—ï½ªï½¤éšï¾“ï½¥ï¾™ï½¥ï½¯ï½¥ï¾ˆï½¥ãƒ»ï¾ï¾ï¾ï½°é›‰ï¾ï¾Šï¾ */
+  a = dmatrix(1, N, 1, N); /* ï½¹ï¾”ï¾ãƒ»a[1...N][1...N] */
   b = dvector(1,N); /* b[1...N] */
 
-  /* ¥Õ¥¡¥¤¥ë¤Î¥ª¡¼¥×¥ó */
-  if ( (fin = fopen( "input_cho.dat", "r")) == NULL )
+  /* ï½¥ï¾•ï½¥ï½¡ï½¥ï½¤ï½¥ãƒ»ï¾ï½¥ï½ªï½¡ï½¼ï½¥ï¾—ï½¥ãƒ»*/
+  if ( (fin = fopen( "input_matrix.dat", "r")) == NULL )
   {
-      printf("File not found : input_cho.dat \n");
+      printf("File not found : input_matrix.dat \n");
       exit(1);
   }
-  if( (fout = fopen( "output_cho.dat", "w")) == NULL )
+  if( (fout = fopen( "output_matrix.dat", "w")) == NULL )
   {
-    printf("Unable to create file : output_cho.dat \n");
+    printf("Unable to create file : output_matrix.dat \n");
     exit(1);
    }
 
-  input_matrix( a, 'A', fin, fout );  /* ¹ÔÎóA¤ÎÆş½ĞÎÏ */  
-  input_vector( b, 'b', fin, fout );  /* ¥Ù¥¯¥È¥ëb¤ÎÆş½ĞÎÏ */
-  a = cholesky_decomp( a );           /* ½¤Àµ¥³¥ì¥¹¥­¡¼Ê¬²ò */
-  b = cholesky_solve( a, b );         /* Á°¿ÊÂåÆş¡¦¸åÂàÂåÆş */
+  input_matrix( a, 'A', fin, fout );  /* ï½¹ï¾”ï¾îˆµï½¤ï¾ï¾†ï£²ï½½ï¾ï¾ï¾ */  
+  input_vector( b, 'b', fin, fout );  /* ï½¥ï¾™ï½¥ï½¯ï½¥ï¾ˆï½¥ãƒ»ï½¤ï¾ï¾†ï£²ï½½ï¾ï¾ï¾ */
+  a = cholesky_decomp( a );           /* ï½½ï½¤ï¾€ï½µï½¥ï½³ï½¥ãƒ»ï½¹ï½¥ï½­ï½¡ï½¼ï¾Šï½¬ï½²ãƒ»*/
+  b = cholesky_solve( a, b );         /* ï¾ï½°ï½¿ï¾Šï¾‚è¡„ï£²ï½¡ï½¦ï½¸è ¶ç‹¡è¡„ï£² */
 
-  /* ·ë²Ì¤Î½ĞÎÏ */
+  /* ï½·ãƒ»ï¾Œï½¤ï¾ï½½ï¾ï¾ï¾ */
   fprintf( fout, "\nThe solution for Ax = b is ;\n");
   for( i = 1 ; i <= N ; i++)
   {
@@ -55,9 +55,9 @@ int main(void)
     fprintf( fout, "\n");
   }
 
-  fclose(fin); fclose(fout);  /* ¥Õ¥¡¥¤¥ë¤Î¥¯¥í¡¼¥º */
+  fclose(fin); fclose(fout);  /* ï½¥ï¾•ï½¥ï½¡ï½¥ï½¤ï½¥ãƒ»ï¾ï½¥ï½¯ï½¥æ‚…ï½¼ï½¥ï½º */
 
-  /* ÎÎ°è¤Î²òÊü */
+  /* ï¾ï¾ï½°éšï¾ï½²îˆãƒ»*/
   free_dmatrix( a, 1, N, 1, N );  free_dvector( b, 1 );
 
   return 0;
@@ -120,7 +120,7 @@ double *cholesky_solve( double **a, double *b )
   return b;
 }
 
-/* a[1...N][1...N]¤ÎÆşÎÏ */
+/* a[1...N][1...N]ï½¤ï¾ï¾†ï£²ï¾ï¾ */
 void input_matrix( double **a, char c, FILE *fin, FILE *fout)
 {
   int i,j;
@@ -137,7 +137,7 @@ void input_matrix( double **a, char c, FILE *fin, FILE *fout)
   }
 }
 
-/* b[1...N]¤ÎÆşÎÏ */
+/* b[1...N]ï½¤ï¾ï¾†ï£²ï¾ï¾ */
 void input_vector( double *b, char c, FILE *fin, FILE *fout)
 {
   int i;
@@ -156,19 +156,19 @@ double **dmatrix(int nr1, int nr2, int nl1, int nl2)
   int i, nrow, ncol; 
   double **a; 
 
-  nrow = nr2 - nr1 + 1 ; /* ¹Ô¤Î¿ô */
-  ncol = nl2 - nl1 + 1 ; /* Îó¤Î¿ô */
+  nrow = nr2 - nr1 + 1 ; /* ï½¹ï¾”ï½¤ï¾ï½¿ãƒ»*/
+  ncol = nl2 - nl1 + 1 ; /* ï¾îŠ—ï¾ï½¿ãƒ»*/
 
-  /* ¹Ô¤Î³ÎÊİ */
+  /* ï½¹ï¾”ï½¤ï¾ï½³ï¾ï¾Šï¾ */
   if ( ( a=(double **)malloc( nrow*sizeof(double *) ) ) == NULL ) 
   {
     printf("Memory cannot be secured.(from the matrix A)\n");
     exit(1);
   }
-  a = a - nr1; /* ¹Ô¤ò¤º¤é¤¹ */
-  /* Îó¤Î³ÎÊİ */
+  a = a - nr1; /* ï½¹ï¾”ï½¤î‡›ï½ºï½¤é¬¢ï½¹ */
+  /* ï¾îŠ—ï¾ï½³ï¾ï¾Šï¾ */
   for( i=nr1; i<=nr2; i++) a[i] = (double *)malloc(ncol*sizeof(double)); 
-  for( i=nr1; i<=nr2; i++) a[i] = a[i]-nl1;             /* Îó¤ò¤º¤é¤¹ */
+  for( i=nr1; i<=nr2; i++) a[i] = a[i]-nl1;             /* ï¾îŠ—î‡›ï½ºï½¤é¬¢ï½¹ */
   
   return(a);
 }
@@ -177,12 +177,12 @@ void free_dmatrix(double **a, int nr1, int nr2, int nl1, int nl2)
 {
   int i;
 
-  /* ¥á¥â¥ê¤Î²òÊü  */
+  /* ï½¥çšˆç­µç†™ï¾ï½²îˆãƒ» */
   for ( i = nr1 ; i <= nr2 ; i++) free((void *)(a[i]+nl1));
   free((void *)(a+nr1));
 }
 
-double *dvector(int i, int j) /* a[i]¡Áa[i+j]¤ÎÎÎ°è¤ò³ÎÊİ */
+double *dvector(int i, int j) /* a[i]ï½¡ï¾a[i+j]ï½¤ï¾ï¾ï¾ï½°éšî‡ªï¾ï¾Šï¾ */
 {
   double *a;
 
@@ -197,5 +197,5 @@ double *dvector(int i, int j) /* a[i]¡Áa[i+j]¤ÎÎÎ°è¤ò³ÎÊİ */
 
 void free_dvector(double *a, int i)
 {
-  free( (void *)(a + i) );  /* (void *)·¿¤Ø¤Î¥­¥ã¥¹¥È¤¬É¬Í× */
+  free( (void *)(a + i) );  /* (void *)ï½·ï½¿ï½¤ï¾˜ï½¤ï¾ï½¥ï½­ï½¥ç½•ï½¹ï½¥ï¾ˆï½¤ï½¬ï¾‰ï½¬ï¾ï¾— */
 }
