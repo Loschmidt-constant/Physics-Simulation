@@ -8,8 +8,8 @@ integer,parameter		:: m_max = 10
 
 real(4),parameter		:: x_min = 0.0
 real(4),parameter		:: x_max = 1.0
-real(8),parameter 		:: dx   = (x_max - x_min)/m_max	!! 空間刻み幅
-real(8),parameter 		:: dt   = /n_max	!! 時間刻み幅
+real(8),parameter 		:: dx   = (x_max - x_min)/dble(m_max)	!! 空間刻み幅
+real(8),parameter 		:: dt   = 1.0/dble(n_max)						!! 時間刻み幅
 
 real(4),parameter		:: kappa = 0.5	!! 拡散係数
 
@@ -35,6 +35,8 @@ implicit none
 
 integer									:: i
 integer									:: j
+integer									:: n
+integer									:: n_cnt
 real,dimension(0:m_max)		:: u
 real,dimension(0:m_max)		:: x
 real,dimension(0:n_max)		:: t
@@ -62,21 +64,25 @@ end do
 
 close(9)	
 
-do j = 1, n_max+1
-	t = dt * j
-	call calculation_unew(u)
-	if (mod(j,1)==100) then
-		write(tmp,'(i4)') j 
-		filename='diffusion_'//trim(adjustl(tmp))//'.dat'
-		open(10, file = filename, status="replace")
+do n_cnt = 0,int(log10(real(n_max)))
+	n = 10**n_cnt
+
+	do j = 1, n
+		t = dt * j
+		call calculation_unew(u)
+		if (mod(j,n)==0) then
+			write(tmp,'(i8)') j 
+			filename='diffusion_'//trim(adjustl(tmp))//'.dat'
+			open(10, file = filename, status="replace")
 			
-		do i = 0, m_max
-			write(10,*) x(i), u(i)
-		end do
+			do i = 0, m_max
+				write(10,*) x(i), u(i)
+			end do
 		
-		close(10)
+			close(10)
 		
-	end if
+		end if
+	end do
 end do
 
 stop
