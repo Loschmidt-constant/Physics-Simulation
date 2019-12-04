@@ -58,8 +58,8 @@ if (lambda <= 0.5) then
 	do j = 1, n_max+1
 		t = dt * j
 		call calculation_unew(u)
-		if (mod(j-1,100)==0) then
-			write(tmp,'(i4)') j-1 
+		if (mod(j,10)==0) then
+			write(tmp,'(i4)') j
 			filename='diffusion_'//trim(adjustl(tmp))//'.dat'
 			open(10, file = filename, status="replace")
 			
