@@ -3,7 +3,7 @@ module constant_values
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 implicit none
 
-integer,parameter		:: n_max = 5000
+integer,parameter		:: n_max = 500
 integer,parameter		:: m_max = 10
 
 real(4),parameter		:: x_min = 0.0
@@ -11,7 +11,7 @@ real(4),parameter		:: x_max = 1.0
 real(8),parameter 		:: dx   = (x_max -x_min)/dble(m_max)	!! 空間刻み幅
 real(8),parameter 		:: dt   = 1.0/dble(n_max)						!! 時間刻み幅
 
-real(4),parameter		:: kappa = 10	!! 拡散係数
+real(4),parameter		:: kappa = 0.1	!! 拡散係数
 
 end module constant_values
 
@@ -35,8 +35,10 @@ implicit none
 
 integer										:: i
 integer										:: j
-real,dimension(0:m_max)		:: u
-real,dimension(0:m_max)		:: x
+integer										:: n
+integer										:: n_cnt
+real,dimension(0:m_max)			:: u
+real,dimension(0:m_max)			:: x
 real,dimension(0:n_max)			:: t
 character(len=50) :: filename
 character(len=50) :: tmp
@@ -52,14 +54,26 @@ do i = 0, m_max
 end do
 
 if (lambda <= 0.5) then
-
+	
+	filename='diffusion_0.dat'
+	open(9, file = filename, status="replace")
+	
 	call get_ICs(u)
+	
+	do i = 0, m_max
+		write(9,*) x(i), u(i)
+	end do
 
-	do j = 1, n_max
+	close(9)
+	
+!do n_cnt = 0,int(log10(real(n_max)))
+	n = 10**n_cnt
+
+	do j = 1, 2000
 		t = dt * j
 		call calculation_unew(u)
-		if (mod(j,100)==0) then
-			write(tmp,'(i4)') j 
+		if (mod(j,2000)==0) then
+			write(tmp,'(i8)') j 
 			filename='diffusion_'//trim(adjustl(tmp))//'.dat'
 			open(10, file = filename, status="replace")
 			
@@ -71,6 +85,7 @@ if (lambda <= 0.5) then
 		
 		end if
 	end do
+!end do
 
 else
 	write(*,*) "この拡散数は Von Neumann の安定条件を満たしていない."
