@@ -3,7 +3,7 @@ module constant_values
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 implicit none
 
-integer,parameter		:: n_max = 1000
+integer,parameter		:: n_max = 10000
 integer,parameter		:: m_max = 100
 
 real(4),parameter		:: x_min = 0.0
@@ -11,7 +11,7 @@ real(4),parameter		:: x_max = 1.0
 real(8),parameter 		:: dx   = (x_max -x_min)/dble(m_max)	!! 空間刻み幅
 real(8),parameter 		:: dt   = 1.0/dble(n_max)						!! 時間刻み幅
 
-real(4),parameter		:: kappa = 0.5/10000.0	!! 拡散係数
+real(4),parameter		:: kappa = 0.5	!! 拡散係数
 real(8),parameter 		:: pi = 4d0 * atan(1d0)
 
 end module constant_values
@@ -34,11 +34,13 @@ use set_functions
 
 implicit none
 
-integer										:: i
-integer										:: j
+integer									:: i
+integer									:: j
+integer									:: n
+integer									:: n_cnt
 real,dimension(0:m_max)		:: u
 real,dimension(0:m_max)		:: x
-real,dimension(0:n_max)			:: t
+real,dimension(0:n_max)		:: t
 character(len=50) :: filename
 character(len=50) :: tmp
 real lambda
@@ -65,11 +67,14 @@ if (lambda <= 0.5) then
 
 	close(9)
 
-	do j = 1, n_max+1
+do n_cnt = 0,int(log10(real(n_max)))
+	n = 10**n_cnt
+
+	do j = 1, n
 		t = dt * j
 		call calculation_unew(u)
-		if (mod(j,100)==0) then
-			write(tmp,'(i4)') j 
+		if (mod(j,n)==0) then
+			write(tmp,'(i8)') j 
 			filename='diffusion_'//trim(adjustl(tmp))//'.dat'
 			open(10, file = filename, status="replace")
 			
@@ -81,6 +86,7 @@ if (lambda <= 0.5) then
 		
 		end if
 	end do
+end do
 
 else
 	write(*,*) "この拡散数は Von Neumann の安定条件を満たしていない."
@@ -98,7 +104,7 @@ use constant_values
 use set_functions
 
 implicit none
-integer									:: i
+integer								:: i
 real										:: x
 real,dimension(0:m_max)	:: u
 
