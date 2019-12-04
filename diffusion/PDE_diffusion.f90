@@ -3,13 +3,13 @@ module constant_values
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 implicit none
 
-integer,parameter		:: n_max = 10000
+integer,parameter		:: n_max = 100000
 integer,parameter		:: m_max = 50
 
 real(4),parameter		:: x_min = 0.0
 real(4),parameter		:: x_max = 1.0
-real(8),parameter 		:: dx   = 0.02	!! 空間刻み幅
-real(8),parameter 		:: dt   = 1.0/100000.0				!! 時間刻み幅
+real(8),parameter 		:: dx   = (x_max - x_min)/dble(m_max)	!! 空間刻み幅
+real(8),parameter 		:: dt   = 1.0/dble(n_max)						!! 時間刻み幅
 
 real(4),parameter		:: kappa = 0.5	!! 拡散係数
 
@@ -33,11 +33,13 @@ use set_functions
 
 implicit none
 
-integer										:: i
-integer										:: j
+integer									:: i
+integer									:: j
+integer									:: n
+integer									:: n_cnt
 real,dimension(0:m_max)		:: u
 real,dimension(0:m_max)		:: x
-real,dimension(0:n_max)			:: t
+real,dimension(0:n_max)		:: t
 character(len=50) :: filename
 character(len=50) :: tmp
 real lambda
@@ -45,19 +47,31 @@ real lambda
 lambda = kappa * (dt/(dx**2))	!! 刻み幅定数
  
 u(0) = 0.0
-u(1) = 0.0
+u(m_max) = 0.0
 
 do i = 0, m_max
- x(i) = dx * i
+	x(i) = dx * i
 end do
 
-	call get_ICs(u)
+filename='diffusion_0.dat'
+open(9, file = filename, status="replace")
+	
+call get_ICs(u)
+	
+do i = 0, m_max
+	write(9,*) x(i), u(i)
+end do
 
-	do j = 0, n_max
+close(9)	
+
+do n_cnt = 0,int(log10(real(n_max)))
+	n = 10**n_cnt
+
+	do j = 1, n
 		t = dt * j
 		call calculation_unew(u)
-		if (mod(j,100)==10) then
-			write(tmp,'(i4)') j 
+		if (mod(j,n)==0) then
+			write(tmp,'(i8)') j 
 			filename='diffusion_'//trim(adjustl(tmp))//'.dat'
 			open(10, file = filename, status="replace")
 			
@@ -69,7 +83,7 @@ end do
 		
 		end if
 	end do
-
+end do
 
 stop
 end program main
