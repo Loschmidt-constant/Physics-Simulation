@@ -2,7 +2,7 @@
 #include<stdlib.h> 
 #include<math.h> 
 
-#define N 3 /*列の要素数*/
+#define N 10 /*列の要素数*/
 #define EPS pow(10.0,-8.0)
 #define KMAX 500
 
@@ -204,7 +204,7 @@ double *gauss_seidel(double **a, double *b, double *x)//ガウス・ザイデル法
 		eps=vector_norm_max(xo,1,N);
 		
 		k++;
-		printf("%d %f %f\n",k,x[1],x[2]);
+		printf("%d %10.8f \n",k,xo[1]);
 	}while(eps>EPS && k<KMAX);
 	
 	free_dvector(xo,1);
