@@ -1,0 +1,35 @@
+'[AUTO.NUMBER.SET(1,1)]
+'
+rem************************************
+rem**** Crank-Nicolson method *****
+rem************************************
+'
+H = 0.05:		K = 0.01:		M = 20:	N = 100:		R = K/H^2
+E = 0.00001:	NN = 200
+'
+lprint:		lprint
+dim	x(M+1)
+for	i = 0 to M step 2:	x(i) = i*H
+	lprint using "####.#";	x(i);
+next i
+'
+dim u(M+1, N+1),	uf(M+1, N+1)
+'
+'IC
+for i = 1 to M-1
+	u(i, 0) = 0
+next i
+'
+'BCs
+for j = 0 to N
+	u(0, j) = 1 - j*K:	u(M, j) = j*K:		'  t = j*K
+next j
+'
+'Print u when t = 0
+lprint:	lprint
+for i = 0 to M step 2
+	lprint using "###.##";		u(i,0);
+next i:	lprint
+'
+'
+'Gauss-Seidel method
