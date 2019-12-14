@@ -4,32 +4,73 @@
 4 rem**** Crank-Nicolson method *****
 5 rem************************************
 6 '
-7 H = 0.05:		K = 0.01:		M = 20:	N = 100:		R = K/H^2
-8 E = 0.00001:	NN = 200
-9 '
-10 lprint:		lprint
-11 dim	x(M+1)
-12 for	i = 0 to M step 2:	x(i) = i*H
-13 	lprint using "####.#";	x(i);
-14 next i
-15 '
+7 open "crank-nicolson.dat" for output as #1
+8 '
+9 'constants
+10 x_min = 0.0:		x_max = 1.0:		M = 100:		N = 170:
+11 dx = (x_max-x_min)/M:		dt = 1.0/N:		r = dt/dx^2:		kappa = 0.5
+12 E = 0.00001:	NN = 200
+13 PI = 4*ATN(1):		'π ≒ 4 arctan(1)
+14 '
+15 dim	x(M+1)
 16 dim u(M+1, N+1),	uf(M+1, N+1)
 17 '
-18 'IC
-19 for i = 1 to M-1
-20 	u(i, 0) = 0
-21 next i
-22 '
-23 'BCs
-24 for j = 0 to N
-25 	u(0, j) = 1 - j*K:	u(M, j) = j*K:		'  t = j*K
-26 next j
-27 '
-28 'Print u when t = 0
-29 lprint:	lprint
-30 for i = 0 to M step 2
-31 	lprint using "###.##";		u(i,0);
-32 next i:	lprint
+18 print #1, "x";
+19 for i = 0 to M step 10
+20 	x(i) = i*dx
+21 	print #1,  using "##.##";		x(i);
+22 next i:
+23 '
+24 'IC
+25 for i = 1 to M-1
+26 	if (x(i)>=0 and x(i)<0.5) then let u(i, 0) = 0 else let u(i, 0) = 10
+27 next i
+28 '
+29 'BCs
+30 for j = 0 to N
+31 	u(0, j) = 0:	u(M, j) = 10
+32 next j
 33 '
-34 '
-35 'Gauss-Seidel method
+34 print #1, 
+35 print #1,  "u(x,0)";
+36 for i =0 to M step 10
+37 	print #1,  using "###.###";	u(i, 0);
+38 next i
+39 '
+40 'Gauss-Seidel method
+41 	for j = 0 to N-1
+42 			for i = 1 to M-1
+43 				u(i, j+1) = u(i, j):		'setting of IC
+44 			next i
+45 			for L = 1 to NN
+46 				for i = 1 to M-1
+47 					uf(i, j+1) = u(i, j+1)		'convergence judgment
+48 					BS = -2*(1 + 1/(r*kappa))
+49 					B = -u(i+1, j) + 2*u(i, j) - u(i-1, j) - 2*u(i, j)/(r*kappa)
+50 					u(i, j+1) = (B - u(i-1, j+1) - u(i+1, j+1))/BS
+51 				next i
+52 				'
+53 				'convergence judgment
+54 				s = 0:	s0 = 0:		'total initial value
+55 				for i = 1 to M-1
+56 					s0 = s0 + ABS(u(i, j+1))
+57 					s = s + ABS(u(i, j+1)-uf(i, j+1))
+58 				next i
+59 				s = s/s0
+60 				if s<=E then 62
+61 			next L
+62 			'
+63 			JJ = 10*(j+1)*dt
+64 			if JJ = int(JJ) then 66
+65 		goto 74
+66 		print #1, 
+67 		t = (j+1) * dt
+68 		print #1,  "u(x,";
+69 		print #1,  using "#.#";t;
+70 		print #1,  ")";
+71 		for i = 0 to M step 10
+72 			print #1,  using "###.###";	u(i, j+1);
+73 		next i
+74 	next j
+75 close
+76 END
