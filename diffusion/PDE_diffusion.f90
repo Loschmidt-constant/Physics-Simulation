@@ -3,7 +3,7 @@ module constant_values
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 implicit none
 
-integer,parameter		:: n_max = 1000
+integer,parameter		:: n_max = 95
 integer,parameter		:: m_max = 10
 
 real(4),parameter		:: x_min = 0.0
@@ -51,31 +51,33 @@ do i = 0, m_max
  x(i) = dx * i
 end do
 
-if (lambda <= 0.5) then
-
+filename='diffusion_0.dat'
+	open(9, file = filename, status="replace")
+	
 	call get_ICs(u)
+	
+	do i = 0, m_max
+		write(9,*) u(i)
+	end do
 
+	close(9)
+	
 	do j = 1, n_max+1
 		t = dt * j
 		call calculation_unew(u)
-		if (mod(j,10)==0) then
-			write(tmp,'(i4)') j
+		if (mod(j,(n_max/10))==0) then
+			write(tmp,'(i4)') j 
 			filename='diffusion_'//trim(adjustl(tmp))//'.dat'
 			open(10, file = filename, status="replace")
 			
 			do i = 0, m_max
-				write(10,*) x(i), u(i)
+				write(10,*) u(i)
 			end do
 		
 			close(10)
 		
 		end if
 	end do
-
-else
-	write(*,*) "この拡散数は Von Neumann の安定条件を満たしていない."
-
-end if
 
 stop
 end program main
