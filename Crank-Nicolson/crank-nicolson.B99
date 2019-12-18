@@ -7,16 +7,16 @@
 7 open "crank-nicolson.dat" for output as #1
 8 '
 9 'constants
-10 x_min = 0.0:		x_max = 1.0:		M = 100:		N = 170:
+10 x_min = 0.0:		x_max = 1.0:		M = 10:		N = 100:
 11 dx = (x_max-x_min)/M:		dt = 1.0/N:		r = dt/dx^2:		kappa = 0.5
-12 E = 0.00001:	NN = 200
+12 E = 0.000001:	NN = 300
 13 PI = 4*ATN(1):		'π ≒ 4 arctan(1)
 14 '
 15 dim	x(M+1)
 16 dim u(M+1, N+1),	uf(M+1, N+1)
 17 '
 18 print #1, "x";
-19 for i = 0 to M step 10
+19 for i = 0 to M 
 20 	x(i) = i*dx
 21 	print #1,  using "##.##";		x(i);
 22 next i:
@@ -33,7 +33,7 @@
 33 '
 34 print #1, 
 35 print #1,  "u(x,0)";
-36 for i =0 to M step 10
+36 for i =0 to M 
 37 	print #1,  using "###.###";	u(i, 0);
 38 next i
 39 '
@@ -68,7 +68,7 @@
 68 		print #1,  "u(x,";
 69 		print #1,  using "#.#";t;
 70 		print #1,  ")";
-71 		for i = 0 to M step 10
+71 		for i = 0 to M 
 72 			print #1,  using "###.###";	u(i, j+1);
 73 		next i
 74 	next j
