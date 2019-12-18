@@ -3,8 +3,8 @@ module constant_values
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 implicit none
 
-integer,parameter		:: n_max = 95
-integer,parameter		:: m_max = 10
+integer,parameter		:: n_max = 10000
+integer,parameter		:: m_max = 100
 
 real(4),parameter		:: x_min = 0.0
 real(4),parameter		:: x_max = 1.0
@@ -56,7 +56,7 @@ filename='diffusion_0.dat'
 	
 	call get_ICs(u)
 	
-	do i = 0, m_max
+	do i = 0, m_max,10
 		write(9,*) u(i)
 	end do
 
@@ -66,11 +66,11 @@ filename='diffusion_0.dat'
 		t = dt * j
 		call calculation_unew(u)
 		if (mod(j,(n_max/10))==0) then
-			write(tmp,'(i4)') j 
+			write(tmp,'(i8)') j 
 			filename='diffusion_'//trim(adjustl(tmp))//'.dat'
 			open(10, file = filename, status="replace")
 			
-			do i = 0, m_max
+			do i = 0, m_max,10
 				write(10,*) u(i)
 			end do
 		
