@@ -1,0 +1,75 @@
+1 '[AUTO.NUMBER.SET(1,1)]
+2 '
+3 rem************************************
+4 rem**** Crank-Nicolson method *****
+5 rem************************************
+6 '
+7 open "crank-nicolson.dat" for output as #1
+8 '
+9 'constants
+10 x_min = 0.0:		x_max = 1.0:		M = 10:		N = 1000:
+11 dx = (x_max-x_min)/M:		dt = 1.0/N:		r = dt/dx^2:		kappa = 0.5
+12 E = 0.000001:	NN = 300
+13 PI = 4*ATN(1):		'π ≒ 4 arctan(1)
+14 '
+15 dim	x(M+1)
+16 dim u(M+1, N+1),	uf(M+1, N+1)
+17 '
+18 print #1, "x";
+19 for i = 0 to M 
+20 	x(i) = i*dx
+21 	print #1,  using "##.##";		x(i);
+22 next i:
+23 '
+24 'IC
+25 for i = 1 to M-1
+26 	if (x(i)>=0 and x(i)<0.5) then let u(i, 0) = 0 else let u(i, 0) = 10
+27 next i
+28 '
+29 'BCs
+30 for j = 0 to N
+31 	u(0, j) = 0:	u(M, j) = 10
+32 next j
+33 '
+34 print #1, 
+35 print #1,  "u(x,0)";
+36 for i =0 to M 
+37 	print #1,  using "###.###";	u(i, 0);
+38 next i
+39 '
+40 'Gauss-Jordan method
+41 	for k = 1 to N
+42 		uk = u(k, k)
+43 '	
+44 		for j = 0 to N-1
+45 			if uk ==0 then let uk = max(u(i, k))
+46 			u(k, j) = u(k,j)/uk:	next j
+47 '	
+48 		for i = 1 to M-1
+49 			BS = -2*(1 + 1/(r*kappa))
+50 			B = -u(i+1, j) + 2*u(i, j) - u(i-1, j) - 2*u(i, j)/(r*kappa)
+51 			u(i, j+1) = (B - u(i-1, j+1) - u(i+1, j+1))/BS
+52 '			
+53 			if i = k then 61
+54 '		
+55 			ui = u(i,k)
+56 '
+57 			for j = 1 to N
+58 				u(i, j) = u(i, j) - u(k, j) * ui
+59 			next j
+60 '			
+61 		next i
+62 			JJ = 10*(j+1)*dt
+63 			if JJ = int(JJ) then 65
+64 		goto 74
+65 		print #1, 
+66 		t = (j+1) * dt
+67 		print #1,  "u(x,";
+68 		print #1,  using "#.#";t;
+69 		print #1,  ")";
+70 		for i = 0 to M 
+71 			print #1,  using "###.###";	u(i, j+1);
+72 		next i
+73 	next k
+74 close
+75 END

@@ -7,7 +7,7 @@ rem************************************
 open "crank-nicolson.dat" for output as #1
 '
 'constants
-x_min = 0.0:		x_max = 1.0:		M = 100:		N = 10000:
+x_min = 0.0:		x_max = 1.0:		M = 10:		N = 1000:
 dx = (x_max-x_min)/M:		dt = 1.0/N:		r = dt/dx^2:		kappa = 0.5
 E = 0.000001:	NN = 300
 PI = 4*ATN(1):		'π ≒ 4 arctan(1)
@@ -37,31 +37,30 @@ for i =0 to M
 	print #1,  using "###.###";	u(i, 0);
 next i
 '
-'Gauss-Seidel method
-	for j = 0 to N-1
-			for i = 1 to M-1
-				u(i, j+1) = u(i, j):		'setting of IC
-			next i
-			for L = 1 to NN
-				for i = 1 to M-1
-					uf(i, j+1) = u(i, j+1)		'convergence judgment
-					BS = -2*(1 + 1/(r*kappa))
-					B = -u(i+1, j) + 2*u(i, j) - u(i-1, j) - 2*u(i, j)/(r*kappa)
-					u(i, j+1) = (B - u(i-1, j+1) - u(i+1, j+1))/BS
-				next i
-				'
-				'convergence judgment
-				s = 0:	s0 = 0:		'total initial value
-				for i = 1 to M-1
-					s0 = s0 + ABS(u(i, j+1))
-					s = s + ABS(u(i, j+1)-uf(i, j+1))
-				next i
-				s = s/s0
-				if s<=E then 62
-			next L
-			'
+'Gauss-Jordan method
+	for k = 1 to N
+		uk = u(k, k)
+'	
+		for j = 0 to N-1
+			if uk ==0 then let uk = max(u(i, k))
+			u(k, j) = u(k,j)/uk:	next j
+'	
+		for i = 1 to M-1
+			BS = -2*(1 + 1/(r*kappa))
+			B = -u(i+1, j) + 2*u(i, j) - u(i-1, j) - 2*u(i, j)/(r*kappa)
+			u(i, j+1) = (B - u(i-1, j+1) - u(i+1, j+1))/BS
+'			
+			if i = k then 61
+'		
+			ui = u(i,k)
+'
+			for j = 1 to N
+				u(i, j) = u(i, j) - u(k, j) * ui
+			next j
+'			
+		next i
 			JJ = 10*(j+1)*dt
-			if JJ = int(JJ) then 66
+			if JJ = int(JJ) then 65
 		goto 74
 		print #1, 
 		t = (j+1) * dt
@@ -71,6 +70,6 @@ next i
 		for i = 0 to M 
 			print #1,  using "###.###";	u(i, j+1);
 		next i
-	next j
+	next k
 close
 END
