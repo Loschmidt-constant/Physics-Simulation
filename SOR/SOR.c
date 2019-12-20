@@ -28,8 +28,12 @@ double *sor(double **a, double *b, double *x, double omega);
 int main(void)
 {
   FILE *fin, *fout;
-  double **a, *b, *x, omega = 1.73;
+  double **a, *b, *x;
+  double mu = 2*cos(M_PI/(double)N);
+  double omega = 2.0/(1 + sqrt(1 - (mu*mu)/4.0));
   int i;
+
+  printf("omega = %f\n",omega);
 
   /* 行列およびベクトルの領域確保 */
   a = dmatrix(1, N, 1, N); /* 行列 a[1...N][1...N] */
@@ -145,7 +149,7 @@ void input_vector( double *b, char c, FILE *fin, FILE *fout)
   {
     fscanf(fin, "%lf", &b[i]);
     fprintf(fout, "%5.2f\t", b[i]);
-    fprintf( fout, "\n");
+    fprintf(fout, "\n");
   }
 }
 
