@@ -9,68 +9,71 @@
 9 'constants
 10 x_min = 0.0:		x_max = 1.0:		M = 10:		N = 100:
 11 dx = (x_max-x_min)/M:		dt = 1.0/N:		r = dt/dx^2:		kappa = 0.5
-12 E = 0.000001:	NN = 300
+12 E = 0.0001:	NN = 200
 13 PI = 4*ATN(1):		'π ≒ 4 arctan(1)
 14 '
 15 dim	x(M+1)
 16 dim u(M+1, N+1),	uf(M+1, N+1)
 17 '
 18 print #1, "x";
-19 for i = 0 to M 
+19 for i = 0 to M
 20 	x(i) = i*dx
-21 	print #1,  using "##.##";		x(i);
-22 next i:
-23 '
-24 'IC
-25 for i = 1 to M-1
-26 	if (x(i)>=0 and x(i)<0.5) then let u(i, 0) = 0 else let u(i, 0) = 10
-27 next i
-28 '
-29 'BCs
-30 for j = 0 to N
-31 	u(0, j) = 0:	u(M, j) = 10
-32 next j
-33 '
-34 print #1, 
-35 print #1,  "u(x,0)";
-36 for i =0 to M 
-37 	print #1,  using "###.###";	u(i, 0);
-38 next i
-39 '
-40 'Gauss-Seidel method
-41 	for j = 0 to N-1
-42 			for i = 1 to M-1
-43 				u(i, j+1) = u(i, j):		'setting of IC
-44 			next i
-45 			for L = 1 to NN
-46 				for i = 1 to M-1
-47 					uf(i, j+1) = u(i, j+1)		'convergence judgment
-48 					BS = -2*(1 + 1/(r*kappa))
-49 					B = -u(i+1, j) + 2*u(i, j) - u(i-1, j) - 2*u(i, j)/(r*kappa)
-50 					u(i, j+1) = (B - u(i-1, j+1) - u(i+1, j+1))/BS
-51 				next i
-52 				'
-53 				'convergence judgment
-54 				s = 0:	s0 = 0:		'total initial value
-55 				for i = 1 to M-1
-56 					s0 = s0 + ABS(u(i, j+1))
-57 					s = s + ABS(u(i, j+1)-uf(i, j+1))
-58 				next i
-59 				s = s/s0
-60 				if s<=E then 62
-61 			next L
-62 			'
-63 			JJ = 10*(j+1)*dt
-64 			if JJ = int(JJ) then 66
-65 		goto 74
-66 		print #1, 
-67 		t = (j+1) * dt
-68 		print #1,  "u(x,";
-69 		print #1,  using "#.#";t;
-70 		print #1,  ")";
-71 		for i = 0 to M 
-72 			print #1,  using "###.###";	u(i, j+1);
-73 		next i
-74 	next j
-75 close
-76 END
+21 next i
+22 '
+23 for i = 0 to M 'step 10
+24 	print #1,  using "##.##";		x(i);
+25 next i:
+26 '
+27 'IC
+28 for i = 1 to M-1
+29 	if (x(i)>=0 and x(i)<0.5) then let u(i, 0) = 0 else let u(i, 0) = 10
+30 next i
+31 '
+32 'BCs
+33 for j = 0 to N
+34 	u(0, j) = 0:	u(M, j) = 10
+35 next j
+36 '
+37 print #1, 
+38 print #1,  "u(x,0)";
+39 for i =0 to M 'step 10
+40 	print #1,  using "###.###";	u(i, 0);
+41 next i:
+42 '
+43 'Gauss-Seidel method
+44 	for j = 0 to N-1
+45 			for i = 1 to M-1
+46 				u(i, j+1) = u(i, j):		'setting of IC
+47 			next i
+48 			for L = 1 to NN
+49 				for i = 1 to M-1
+50 					uf(i, j+1) = u(i, j+1)		'convergence judgment
+51 					BS = -2*(1 + 1/(r*kappa))
+52 					B = -u(i+1, j) + 2*u(i, j) - u(i-1, j) - 2*u(i, j)/(r*kappa)
+53 					u(i, j+1) = (B - u(i-1, j+1) - u(i+1, j+1))/BS
+54 				next i
+55 				'
+56 				'convergence judgment
+57 				s = 0:	s0 = 0:		'total initial value
+58 				for i = 1 to M-1
+59 					s0 = s0 + ABS(u(i, j+1))
+60 					s = s + ABS(u(i, j+1)-uf(i, j+1))
+61 				next i
+62 				s = s/s0
+63 				if s<=E then 65
+64 			next L
+65 			'
+66 			JJ = 10*(j+1)*dt
+67 			if JJ = int(JJ) then 69
+68 		goto 77
+69 		print #1, 
+70 		t = (j+1) * dt
+71 		print #1,  "u(x,";
+72 		print #1,  using "#.#";t;
+73 		print #1,  ")";
+74 		for i = 0 to M 'step 10
+75 			print #1,  using "###.###";	u(i, j+1);
+76 		next i
+77 	next j
+78 close
+79 END

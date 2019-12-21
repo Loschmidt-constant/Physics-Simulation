@@ -7,70 +7,73 @@ rem************************************
 open "crank-nicolson.dat" for output as #1
 '
 'constants
-x_min = 0.0:		x_max = 1.0:		M = 100:		N = 10000:
-dx = (x_max-x_min)/M:		dt = 1.0/N:		r = dt/dx^2:		kappa = 0.5
-E = 0.000001:	NN = 300
-PI = 4*ATN(1):		'π ≒ 4 arctan(1)
+x_min = 0.0:        x_max = 1.0:        M = 100:        N = 100:
+dx = (x_max-x_min)/M:       dt = 1.0/N:     r = dt/dx^2:        kappa = 0.5
+E = 0.0001: NN = 200
+PI = 4*ATN(1):      'π ≒ 4 arctan(1)
 '
-dim	x(M+1)
-dim u(M+1, N+1),	uf(M+1, N+1)
+dim x(M+1)
+dim u(M+1, N+1),    uf(M+1, N+1)
 '
 print #1, "x";
-for i = 0 to M 
-	x(i) = i*dx
-	print #1,  using "##.##";		x(i);
+for i = 0 to M
+    x(i) = i*dx
+next i
+'
+for i = 0 to M step 10
+    print #1,  using "##.##";       x(i);
 next i:
 '
 'IC
 for i = 1 to M-1
-	if (x(i)>=0 and x(i)<0.5) then let u(i, 0) = 0 else let u(i, 0) = 10
+    if (x(i)>=0 and x(i)<0.5) then let u(i, 0) = 0 else let u(i, 0) = 10
 next i
 '
 'BCs
 for j = 0 to N
-	u(0, j) = 0:	u(M, j) = 10
+    u(0, j) = 0:    u(M, j) = 10
 next j
 '
 print #1, 
 print #1,  "u(x,0)";
-for i =0 to M 
-	print #1,  using "###.###";	u(i, 0);
-next i
+for i =0 to M step 10
+    print #1,  using "###.###"; u(i, 0);
+next i:
 '
 'Gauss-Seidel method
-	for j = 0 to N-1
-			for i = 1 to M-1
-				u(i, j+1) = u(i, j):		'setting of IC
-			next i
-			for L = 1 to NN
-				for i = 1 to M-1
-					uf(i, j+1) = u(i, j+1)		'convergence judgment
-					BS = -2*(1 + 1/(r*kappa))
-					B = -u(i+1, j) + 2*u(i, j) - u(i-1, j) - 2*u(i, j)/(r*kappa)
-					u(i, j+1) = (B - u(i-1, j+1) - u(i+1, j+1))/BS
-				next i
-				'
-				'convergence judgment
-				s = 0:	s0 = 0:		'total initial value
-				for i = 1 to M-1
-					s0 = s0 + ABS(u(i, j+1))
-					s = s + ABS(u(i, j+1)-uf(i, j+1))
-				next i
-				s = s/s0
-				if s<=E then 62
-			next L
-			'
-			JJ = 10*(j+1)*dt
-			if JJ = int(JJ) then 66
-		goto 74
-		print #1, 
-		t = (j+1) * dt
-		print #1,  "u(x,";
-		print #1,  using "#.#";t;
-		print #1,  ")";
-		for i = 0 to M 
-			print #1,  using "###.###";	u(i, j+1);
-		next i
-	next j
+    for j = 0 to N-1
+            for i = 1 to M-1
+                u(i, j+1) = u(i, j):        'setting of IC
+            next i
+            for L = 1 to NN
+                for i = 1 to M-1
+                    uf(i, j+1) = u(i, j+1)      'convergence judgment
+                    BS = -2*(1 + 1/(r*kappa))
+                    B = -u(i+1, j) + 2*u(i, j) - u(i-1, j) - 2*u(i, j)/(r*kappa)
+                    u(i, j+1) = (B - u(i-1, j+1) - u(i+1, j+1))/BS
+                next i
+                '
+                'convergence judgment
+                s = 0:  s0 = 0:     'total initial value
+                for i = 1 to M-1
+                    s0 = s0 + ABS(u(i, j+1))
+                    s = s + ABS(u(i, j+1)-uf(i, j+1))
+                next i
+                s = s/s0
+                if s<=E then 65
+            next L
+            '
+            JJ = 10*(j+1)*dt
+            if JJ = int(JJ) then 69
+        goto 77
+        print #1, 
+        t = (j+1) * dt
+        print #1,  "u(x,";
+        print #1,  using "#.#";t;
+        print #1,  ")";
+        for i = 0 to M step 10
+            print #1,  using "###.###"; u(i, j+1);
+        next i
+    next j
 close
 END
