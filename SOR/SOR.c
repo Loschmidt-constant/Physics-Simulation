@@ -29,8 +29,7 @@ int main(void)
 {
   FILE *fin, *fout;
   double **a, *b, *x;
-  double mu = 2*cos(M_PI/(double)N);
-  double omega = 2.0/(1 + sqrt(1 - (mu*mu)/4.0));
+  double omega = 1.73;
   int i;
 
   printf("omega = %f\n",omega);
