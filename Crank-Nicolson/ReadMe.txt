@@ -1,59 +1,57 @@
 ******************************************************
-Crank-Nicolson–@‚É‚æ‚é•Î”÷•ª•û’öŽ®‚Ì·•ª‰ð–@ƒvƒƒOƒ‰ƒ€
+Crank-Nicolsonæ³•ã«ã‚ˆã‚‹åå¾®åˆ†æ–¹ç¨‹å¼ã®å·®åˆ†è§£æ³•ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
 
 By; Loschmidt's constant
-(HP : https://github.com/Loschmidt-constant)
+(HP : https://tanraku-teki.tumblr.com/)
 ******************************************************
 
-šššŠT—vššš
-99Basic‚ð—p‚¢‚Ä,Crank-Nicolson–@‚É‚æ‚é•Î”÷•ª•û’öŽ®‚Ì‰A‰ð–@ƒXƒL[ƒ€‚ðƒvƒƒOƒ‰ƒ€‚µ‚Ü‚µ‚½.
-ƒvƒƒOƒ‰ƒ€‚»‚Ì‚à‚Ì‚Í,g•Î”÷•ª•û’öŽ®‚Ì”’l‰ð–@“ü–å(ŽRèŠsŽ E’˜,X–ko”Å)h‚ðŽQl‚Éì¬‚µ‚Ü‚µ‚½.
-99BasicŽ©‘Ì‚Í‹Œ¢‘ãBasic‚ðƒRƒ“ƒZƒvƒg‚ÉÝŒv‚³‚ê‚Ä‚¢‚é‚½‚ß,gs”Ô†h‚Æ‚¢‚¤‚à‚Ì‚ªƒvƒƒOƒ‰ƒ~ƒ“ƒOŽž‚Éí‚É•K—v‚Å‚ ‚è,“Á‚É,Å‹ß‚ÌƒvƒƒOƒ‰ƒ~ƒ“ƒOŒ¾Œê(C,Fortran,Python,etc...)‚ðŽg—p‚³‚ê‚Ä‚¢‚é•û‚É‚Í,ƒR[ƒfƒBƒ“ƒO–Ê‚Å‚â‚Á‚©‚¢‚È‚Ì‚Í”Û‚ß‚Ü‚¹‚ñ.
-‚Å‚·‚Ì‚Å,–{ƒvƒƒOƒ‰ƒ€‚Í99Basic ŠÖ˜Aƒ†[ƒeƒBƒŠƒeƒBgs”Ô†‚È‚µ‚ÅƒvƒƒOƒ‰ƒ€‚ðì¬‚·‚é‚½‚ß‚ÌƒZƒbƒgƒAƒbƒv(ì¬ŽÒFInotchi‚³‚ñ[h_inotchi@hotmail.com],‚®‚è‚³‚ñ[ezaki@urban.ne.jp])h‚ð—p‚¢‚Ä,Šù‘¶‚ÌƒGƒfƒBƒ^(“–•ûŠÂ‹«:Notepad++)‚Å99BasicƒR[ƒfƒBƒ“ƒO’v‚µ‚Ü‚µ‚½.
-Šg’£Žq‚Ì.99‚Í‚±‚Ìƒ†[ƒeƒBƒŠƒeƒB‚É‚æ‚é‚à‚Ì‚Å‚·.
+â˜…â˜…â˜…æ¦‚è¦â˜…â˜…â˜…
+99Basicã‚’ç”¨ã„ã¦,Crank-Nicolsonæ³•ã«ã‚ˆã‚‹åå¾®åˆ†æ–¹ç¨‹å¼ã®é™°è§£æ³•ã‚¹ã‚­ãƒ¼ãƒ ã‚’ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã—ã¾ã—ãŸ.
+ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãã®ã‚‚ã®ã¯,â€œåå¾®åˆ†æ–¹ç¨‹å¼ã®æ•°å€¤è§£æ³•å…¥é–€(å±±å´Žéƒ­æ»‹ãƒ»è‘—,æ£®åŒ—å‡ºç‰ˆ)â€ã‚’å‚è€ƒã«ä½œæˆã—ã¾ã—ãŸ.
+99Basicè‡ªä½“ã¯æ—§ä¸–ä»£Basicã‚’ã‚³ãƒ³ã‚»ãƒ—ãƒˆã«è¨­è¨ˆã•ã‚Œã¦ã„ã‚‹ãŸã‚,â€œè¡Œç•ªå·â€ã¨ã„ã†ã‚‚ã®ãŒãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°æ™‚ã«å¸¸ã«å¿…è¦ã§ã‚ã‚Š,ç‰¹ã«,æœ€è¿‘ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°è¨€èªž(C,Fortran,Python,etc...)ã‚’ä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹æ–¹ã«ã¯,ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°é¢ã§ã‚„ã£ã‹ã„ãªã®ã¯å¦ã‚ã¾ã›ã‚“.
+ã§ã™ã®ã§,æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯99Basic é–¢é€£ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£â€œè¡Œç•ªå·ãªã—ã§ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—(ä½œæˆè€…ï¼šInotchiã•ã‚“[h_inotchi@hotmail.com],ãã‚Šã•ã‚“[ezaki@urban.ne.jp])â€ã‚’ç”¨ã„ã¦,æ—¢å­˜ã®ã‚¨ãƒ‡ã‚£ã‚¿(å½“æ–¹ç’°å¢ƒ:Notepad++)ã§99Basicã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°è‡´ã—ã¾ã—ãŸ.
+æ‹¡å¼µå­ã®.99ã¯ã“ã®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ã«ã‚ˆã‚‹ã‚‚ã®ã§ã™.
 
 
-šššƒZƒbƒgƒAƒbƒv•û–@ššš
-
-–{ƒvƒƒOƒ‰ƒ€‚Ì‚²Žg—p‚É‚Í99Basic³Ž®”Å(ƒŒƒWƒXƒg•K—v)‚ªƒn[ƒhƒfƒBƒXƒN“à‚ÉƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚è‚Ü‚·.
-‚Ü‚½gs”Ô†‚È‚µ‚ÅƒvƒƒOƒ‰ƒ€‚ðì¬‚·‚é‚½‚ß‚ÌƒZƒbƒgƒAƒbƒvƒtƒHƒ‹ƒ_“à‚Ìg99setup.exeh‚ðŽÀs‚µ,‰æ–Ê‚É]‚Á‚Ä,99Basic–{‘Ì‚Ì‚ ‚éƒtƒHƒ‹ƒ_‚ðŽw’è‚µ,ƒZƒbƒgƒAƒbƒv‚ðs‚Á‚Ä‚­‚¾‚³‚¢.
-‚»‚¤‚·‚ê‚Î,–{ƒvƒƒOƒ‰ƒ€‚ªŽÀs‚¨‚æ‚Ñ•ÒW‚ªo—ˆ‚Ü‚·.
-
-
-šššŽg—p•û–@ššš
-Ô‚¢ƒAƒCƒRƒ“‚ÍŠg’£Žqg.B99h‚Å,’Êí‚Ì99BasicƒvƒƒOƒ‰ƒ€ƒtƒ@ƒCƒ‹‚Å‚·.
-Â‚¢ƒAƒCƒRƒ“‚ÍŠg’£Žqg.99h‚Å,s”Ô†‚È‚µ‚ÌƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚Å‚·.
-
-Šg’£Žqg.99h‚ÌƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚ðŠù‘¶‚ÌƒeƒLƒXƒgƒGƒfƒBƒ^‚Å•ÒW‚µ,•Û‘¶‚µ‚Ä‰º‚³‚¢.
-¨ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚·‚é‚Æ99Basic‚ª‹N“®‚µ‚Ä‚µ‚Ü‚¤‚Ì‚Å,•ÒW‚·‚é‚Æ‚«‚ÍƒeƒLƒXƒgƒGƒfƒBƒ^‚©‚çgŠJ‚­h“™‚ð‚µ‚Ä‚­‚¾‚³‚¢.
-
-‚»‚µ‚Ä‚»‚Ìƒtƒ@ƒCƒ‹‚ðƒ_ƒuƒ‹ƒNƒŠƒbƒN‚·‚é‚Æ,99Basicã‚ÅŽÀs‚Å‚«‚é‚æ‚¤‚É‚È‚è‚Ü‚·.
+â˜…â˜…â˜…ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—æ–¹æ³•â˜…â˜…â˜…
+æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ã”ä½¿ç”¨ã«ã¯99Basicæ­£å¼ç‰ˆ(ãƒ¬ã‚¸ã‚¹ãƒˆå¿…è¦)ãŒãƒãƒ¼ãƒ‰ãƒ‡ã‚£ã‚¹ã‚¯å†…ã«ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™.
+ã¾ãŸâ€œè¡Œç•ªå·ãªã—ã§ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ãƒ•ã‚©ãƒ«ãƒ€å†…ã®â€œ99setup.exeâ€ã‚’å®Ÿè¡Œã—,ç”»é¢ã«å¾“ã£ã¦,99Basicæœ¬ä½“ã®ã‚ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã‚’æŒ‡å®šã—,ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã‚’è¡Œã£ã¦ãã ã•ã„.
+ãã†ã™ã‚Œã°,æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãŒå®Ÿè¡ŒãŠã‚ˆã³ç·¨é›†ãŒå‡ºæ¥ã¾ã™.
 
 
-ššš”õlššš
-ƒ\[ƒX‚ÌÅ‰‚ÌƒRƒƒ“ƒg•¶
+â˜…â˜…â˜…ä½¿ç”¨æ–¹æ³•â˜…â˜…â˜…
+èµ¤ã„ã‚¢ã‚¤ã‚³ãƒ³ã¯æ‹¡å¼µå­â€œ.B99â€ã§,é€šå¸¸ã®99Basicãƒ—ãƒ­ã‚°ãƒ©ãƒ ãƒ•ã‚¡ã‚¤ãƒ«ã§ã™.
+é’ã„ã‚¢ã‚¤ã‚³ãƒ³ã¯æ‹¡å¼µå­â€œ.99â€ã§,è¡Œç•ªå·ãªã—ã®ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã§ã™.
+
+æ‹¡å¼µå­â€œ.99â€ã®ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ—¢å­˜ã®ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒ‡ã‚£ã‚¿ã§ç·¨é›†ã—,ä¿å­˜ã—ã¦ä¸‹ã•ã„.
+â†’ ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã™ã‚‹ã¨99BasicãŒèµ·å‹•ã—ã¦ã—ã¾ã†ã®ã§,ç·¨é›†ã™ã‚‹ã¨ãã¯ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒ‡ã‚£ã‚¿ã‹ã‚‰â€œé–‹ãâ€ç­‰ã‚’ã—ã¦ãã ã•ã„.
+
+ãã—ã¦ãã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã™ã‚‹ã¨,99Basicä¸Šã§å®Ÿè¡Œã§ãã‚‹ã‚ˆã†ã«ãªã‚Šã¾ã™.
+
+
+â˜…â˜…â˜…å‚™è€ƒâ˜…â˜…â˜…
+ã‚½ãƒ¼ã‚¹ã®æœ€åˆã®ã‚³ãƒ¡ãƒ³ãƒˆæ–‡
 '[AUTO.NUMBER.SET(a,b)]
-‚Í
-@a:‚±‚Ì–½—ß‚Ìs‚ÅƒZƒbƒg‚µ‚½‚¢s”Ô†
-  b:‚±‚Ì–½—ß‚©‚ç‘‚¦‚Ä‚¢‚­s”Ô†‚Ì—Ê
-‚ðŽw‚µ‚Ä‚¨‚è,Ž©“®“Y•t‚·‚és”Ô†‚ðŽw’è‚Å‚«‚Ü‚·.
+ã¯
+ã€€a:ã“ã®å‘½ä»¤ã®è¡Œã§ã‚»ãƒƒãƒˆã—ãŸã„è¡Œç•ªå·
+  b:ã“ã®å‘½ä»¤ã‹ã‚‰å¢—ãˆã¦ã„ãè¡Œç•ªå·ã®é‡
+ã‚’æŒ‡ã—ã¦ãŠã‚Š,è‡ªå‹•æ·»ä»˜ã™ã‚‹è¡Œç•ªå·ã‚’æŒ‡å®šã§ãã¾ã™.
 
-‚±‚ÌƒRƒ}ƒ“ƒh‚ðŽg‚í‚È‚¢ê‡,s”Ô†‚Í10000‚©‚ç10‚¨‚«‚É‚È‚è‚Ü‚·.
+ã“ã®ã‚³ãƒžãƒ³ãƒ‰ã‚’ä½¿ã‚ãªã„å ´åˆ,è¡Œç•ªå·ã¯10000ã‹ã‚‰10ãŠãã«ãªã‚Šã¾ã™.
 
-–{ƒvƒƒOƒ‰ƒ€‚Å‚Í(a,b)=(1,1)‚Æ‚µ‚Ä‚¨‚è‚Ü‚·.
+æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã§ã¯(a,b)=(1,1)ã¨ã—ã¦ãŠã‚Šã¾ã™.
 
-‚Ü‚½,99Basic‚ÌŽd—lã,•Ï”‚ÉŽg‚¦‚éƒƒ‚ƒŠ‚Ì‘å‚«‚³‚Í180 KB’ö“x‚È‚Ì‚Å,”z—ñ•Ï”‚Í‚¹‚¢‚º‚¢130*130‚ÌƒTƒCƒY’ö“x‚µ‚©’è‹`‚Å‚«‚Ü‚¹‚ñ.
+ã¾ãŸ,99Basicã®ä»•æ§˜ä¸Š,å¤‰æ•°ã«ä½¿ãˆã‚‹ãƒ¡ãƒ¢ãƒªã®å¤§ãã•ã¯180 KBç¨‹åº¦ãªã®ã§,é…åˆ—å¤‰æ•°ã¯ã›ã„ãœã„130*130ã®ã‚µã‚¤ã‚ºç¨‹åº¦ã—ã‹å®šç¾©ã§ãã¾ã›ã‚“.
 
-ššš’˜ìŒ ššš
 
-–{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒEƒFƒA‚Å‚·.
-“]ÚEÄ”z•z‚ÍŽ©—R‚És‚Á‚Ä’¸‚¢‚Ä\‚¢‚Ü‚¹‚ñ.
-‚»‚ÌÛ‚É‚ÍŽ–Œã‚ÅŒ‹\‚Å‚·‚Ì‚Å,‚²˜A—’¸‚¯‚ê‚ÎK‚¢‚Å‚·.
+â˜…â˜…â˜…è‘—ä½œæ¨©â˜…â˜…â˜…
+æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚¦ã‚§ã‚¢ã§ã™.
+è»¢è¼‰ãƒ»å†é…å¸ƒã¯è‡ªç”±ã«è¡Œã£ã¦é ‚ã„ã¦æ§‹ã„ã¾ã›ã‚“.
 
-99Basic‚Ì’˜ìŒ Š—LŽÒ‚Í,”Ñ“c’”V‚³‚ñ‚Å‚·.
-ŒöŽ®‚g‚o@http://www.sagami.ne.jp/tadaka/99Basic/
+ãªãŠ,
+ãƒ»99Basicã®è‘—ä½œæ¨©æ‰€æœ‰è€…ã¯,é£¯ç”°å´‡ä¹‹ã•ã‚“ã§ã™.
+ã€€å…¬å¼ï¼¨ï¼°ï¼šhttp://www.sagami.ne.jp/tadaka/99Basic/
 
-s”Ô†‚ðŽ©“®“I‚É•t—^‚·‚éƒvƒƒOƒ‰ƒ€gAuton-c.B99h‚Ìì¬ŽÒ‚Í
-Inotchi‚³‚ñ(h_inotchi@hotmail.com)‚Å‚·.
+ãƒ»è¡Œç•ªå·ã‚’è‡ªå‹•çš„ã«ä»˜ä¸Žã™ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ â€œAuton-c.B99â€ã®ä½œæˆè€…ã¯Inotchiã•ã‚“(h_inotchi@hotmail.com)ã§ã™.
 
-ƒZƒbƒgƒAƒbƒvƒvƒƒOƒ‰ƒ€‚Ìì¬ŽÒ‚Í,‚®‚è‚³‚ñ(ezaki@urban.ne.jp)‚Å‚·.
+ãƒ»ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ä½œæˆè€…ã¯,ãã‚Šã•ã‚“(ezaki@urban.ne.jp)ã§ã™.
